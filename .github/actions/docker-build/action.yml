@@ -53,12 +53,14 @@ runs:
           echo "${{ inputs.docker-ghcr-pat }}" | docker login ghcr.io -u "${{ inputs.docker-ghcr-username }}" --password-stdin
         fi
         bin/docker-build-${{ inputs.component }}
+        ls -la
+        ls -la bin/
 
     - name: Output Image Digest
       shell: bash
       id: image_digest
       run: |
-        digest=$(cat metadata-${{ inputs.component }} | jq -r '."containerimage.digest"')
+        digest=$(cat metadata-${{ inputs.component }}.json | jq -r '."containerimage.digest"')
         echo "${digest}"
         echo "digest=${{ inputs.docker-registry }}/${{ inputs.component }}@${digest}" >> "$GITHUB_OUTPUT"
 
