@@ -89,6 +89,10 @@ See https://github.com/docker/buildx/issues/59 for more details'
         -f "$file" \
         "$@"
 
+    echo "************"
+    docker images
+    echo "************"
+
     echo "$repo:$tag"
     docker_image_digest "$repo:$tag"
 }
