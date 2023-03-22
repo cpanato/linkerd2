@@ -52,7 +52,8 @@ docker_repo() {
 }
 
 docker_build() {
-    repo=$(docker_repo "$1")
+    name=$1
+    repo=$(docker_repo "$name")
     shift
 
     tag=$1
@@ -87,21 +88,10 @@ See https://github.com/docker/buildx/issues/59 for more details'
         $output_params \
         -t "$repo:$tag" \
         -f "$file" \
+        --metadata-file metadata-"$name".json
         "$@"
 
-    echo "************"
-    docker images
-    echo "************"
-
     echo "$repo:$tag"
-    docker_image_digest "$repo:$tag"
-}
-
-docker_image_digest() {
-  image=$1
-  digest=$(docker inspect --format '{{ index .RepoDigests 0 }}' "$image")
-  echo "${digest}"
-  echo "digest=${digest}" >> "$GITHUB_OUTPUT"
 }
 
 docker_pull() {
