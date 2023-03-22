@@ -90,13 +90,12 @@ See https://github.com/docker/buildx/issues/59 for more details'
         "$@"
 
     echo "$repo:$tag"
-    docker_image_digest "$1" "$tag"
+    docker_image_digest "$repo:$tag"
 }
 
 docker_image_digest() {
-  repo=$(docker_repo "$1")
-  tag=$2
-  digest=$(docker inspect --format '{{ index .RepoDigests 0 }}' "$repo:$tag")
+  image=$1
+  digest=$(docker inspect --format '{{ index .RepoDigests 0 }}' "$image")
   echo "${digest}"
   echo "digest=${digest}" >> "$GITHUB_OUTPUT"
 }
