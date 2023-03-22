@@ -54,6 +54,14 @@ runs:
         fi
         bin/docker-build-${{ inputs.component }}
 
+    - name: Output Image Digest
+      shell: bash
+      id: image_digest
+      run: |
+        digest=$(docker inspect --format '{{ index .RepoDigests 0 }}' "${{ inputs.docker-registry }}/${{ inputs.component }}:${{ inputs.tag }}")
+        echo "${digest}"
+        echo "digest=${digest}" >> "$GITHUB_OUTPUT"
+
     # Delete older docker images to prevent cache bloat.
     - run: bin/docker-cache-prune
       shell: bash
@@ -62,3 +70,6 @@ outputs:
   image:
     description: The image that was built
     value: ${{ inputs.docker-registry }}/${{ inputs.component }}:${{ inputs.tag }}
+  digest:
+    description: The image digest
+    value: ${{ steps.image_digest.output.digest }}
