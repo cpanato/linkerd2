@@ -11,7 +11,7 @@ permissions:
 
 env:
   GH_ANNOTATION: true
-  DOCKER_REGISTRY: ghcr.io/linkerd
+  DOCKER_REGISTRY: ghcr.io/cpanato
   K3D_VERSION: v5.4.4
 
 jobs:
